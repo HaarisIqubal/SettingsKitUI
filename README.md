@@ -1,6 +1,16 @@
 # SettingsKitUI
 
+### 🛑 Currently this package is under inital development phase
+🚧 This package in development so expect API changes until stable release appear. Thank you for your understanding.🚧
+
 A composable, cross-platform SwiftUI UI library for building beautiful, native-feeling Settings screens across iOS, iPadOS, macOS, watchOS, and visionOS.
+
+[![Swift 6](https://img.shields.io/badge/Swift-6.0%206.1%206.2-orange.svg?logo=swift&logoColor=white)](https://swift.org)
+[![Platforms](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20watchOS%2010+%20|%20visionOS%202+|%20macOS%2014+-black.svg?logo=apple)](https://swift.org)
+[![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)
+[![DocC](https://img.shields.io/badge/Read%20the%20Docs-orange?logo=readthedocs&logoColor=fff)](https://haarisiqubal.github.io/SettingsKitUI/documentation/settingskitui/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
+
 
 ## Overview
 When managing multiple apps, keeping settings views visually consistent across platforms often leads to massive code duplication and endless `#if os(macOS)` compiler checks.
