@@ -32,7 +32,7 @@ public struct SKList<Content: View>: View {
     
     /// Creates a new cross-platform list with the specified content.
     ///
-    /// - Parameter content: A view builder closure that provides the sections and rows for the list.
+    /// - Parameter content: `A view builder closure that provides the sections and rows for the list.`
     public init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
@@ -56,16 +56,24 @@ public struct SKList<Content: View>: View {
         SKList {
             SKSection {
                 SKActionRow(
-                    icon: "car",
-                    iconColor: .accentColor,
-                    title: "Car",
-                    subtitle: "Open Car",
+                    icon: "pencil",
+                    iconColor: .brown,
+                    title: "Edit",
+                    subtitle: "Open edit",
                     action: {}
                 )
+                SKActionRow(
+                    icon: "ladybug.fill",
+                    iconColor: .red,
+                    title: "Report Bug",
+                    action: {}
+                )
+                SKToggleRow(icon: "cloud.fill", iconColor: .blue, title: "iCloud Sync", isOn: .constant(.random()))
+
             } header: {
                 Text("Header")
             } footer : {
-                Text("Footer")
+                Text("This footer section for describing how it will look like.")
             }
         }
         .navigationTitle("Settings Preview")

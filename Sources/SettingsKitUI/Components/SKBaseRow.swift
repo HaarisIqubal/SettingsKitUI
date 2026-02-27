@@ -8,15 +8,18 @@
 import SwiftUI
 
 public struct SKBaseRow<TrailingContent: View>: View {
-    public let icon: String
-    public let iconColor: Color
+    public let icon: String?
+    public let iconColor: Color?
     public let title: String
     public let subtitle: String?
     @ViewBuilder public let trailingContent: TrailingContent
     
+    @Environment(\.skShowsIcon) private var showsIcon
+    @Environment(\.skIconShape) private var iconShape
+    
     public init(
-        icon: String,
-        iconColor: Color,
+        icon: String? = nil,
+        iconColor: Color?,
         title: String,
         subtitle: String? = nil,
         @ViewBuilder trailingContent: () -> TrailingContent = { EmptyView() }
@@ -30,18 +33,18 @@ public struct SKBaseRow<TrailingContent: View>: View {
     
     public var body: some View {
         HStack(spacing: 12) {
-            // Your signature rounded icon
-            ZStack {
-                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .fill(iconColor)
-                    .frame(width: 28, height: 28)
-                
-                Image(systemName: icon)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.white)
+            if showsIcon {
+                ZStack {
+                    iconBackgroundShape
+                    if let icon = icon {
+                        Image(systemName: icon)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(.white)
+                    }
+                }
+                .frame(width: 28, height: 28)
             }
             
-            // Text Content
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .foregroundStyle(.primary)
@@ -56,12 +59,75 @@ public struct SKBaseRow<TrailingContent: View>: View {
             
             Spacer()
             
-            // Injected specific control (Toggle, Chevron, Status text)
             trailingContent
         }
-        // Removes generic list row separators on macOS so it looks cleaner
-        #if os(macOS)
+#if os(macOS)
         .padding(.vertical, 4)
-        #endif
+#endif
+    }
+    
+    @ViewBuilder
+    private var iconBackgroundShape: some View {
+        if let iconColor = iconColor {
+            switch iconShape {
+            case .standard:
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(iconColor)
+            case .circle:
+                Circle()
+                    .fill(iconColor)
+            case .roundedRectangle(let radius):
+                RoundedRectangle(cornerSize: .init(width: radius, height: radius), style: .continuous)
+                    .fill(iconColor)
+            }
+        }
     }
 }
+
+// MARK: Icon Share Definition
+public enum SKIconShape {
+    /// The default rounded rectangle (corner radius 12)
+    case standard
+    /// A perfectly rounded circle
+    case circle
+    /// A custom rounded rectangle with a specific corner radius
+    case roundedRectangle(CGFloat)
+}
+
+// MARK: Environment Keys
+private struct SKShowsIconKeys: EnvironmentKey {
+    static let defaultValue: Bool = true
+}
+
+private struct SKIconShapeKey: @MainActor EnvironmentKey {
+    @MainActor static let defaultValue: SKIconShape = .standard
+}
+
+public extension EnvironmentValues {
+    var skShowsIcon: Bool {
+        get { self[SKShowsIconKeys.self] }
+        set { self[SKShowsIconKeys.self] = newValue}
+    }
+    
+    @MainActor
+    var skIconShape: SKIconShape {
+        get { self[SKIconShapeKey.self]}
+        set { self[SKIconShapeKey.self] = newValue}
+    }
+}
+
+public extension View {
+    /// Controls whether the `SKBaseRow` icon is displayed.
+    ///     - Parameters shows: `false` to hide the icon completely.
+    func skShowsIcon(_ shows: Bool) -> some View {
+        self.environment(\.skShowsIcon, shows)
+    }
+    
+    /// Changes the background shape of the `SKBaseRow` icon.
+    ///     - Parameters shape: The `SKIconShape` to apply (eg., `.circle`).
+    func skIconShape(_ shape: SKIconShape) -> some View {
+        self.environment(\.skIconShape, shape)
+    }
+}
+
+

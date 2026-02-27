@@ -1,10 +1,3 @@
-//
-//  CODE_OF_CONDUCT.md
-//  SettingsKitUI
-//
-//  Created by Haaris Iqubal on 25/02/26.
-//
-
 # SettingsKitUI Code of Conduct
 
 Like the technical community as a whole, the SettingsKitUI team and community is made up of a mixture of professionals and volunteers from all over the world, working on every aspect of the mission - including mentorship, teaching, and connecting people.

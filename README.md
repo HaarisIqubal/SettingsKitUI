@@ -1,10 +1,3 @@
-//
-//  README.md
-//  SettingsKitUI
-//
-//  Created by Haaris Iqubal on 25/02/26.
-//
-
 # SettingsKitUI
 
 A composable, cross-platform SwiftUI UI library for building beautiful, native-feeling Settings screens across iOS, iPadOS, macOS, watchOS, and visionOS.

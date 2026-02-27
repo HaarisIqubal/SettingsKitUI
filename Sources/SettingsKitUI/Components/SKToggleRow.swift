@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - Toggle Row
-public struct SettingsToggleRow: View {
+public struct SKToggleRow: View {
     public let icon: String
     public let iconColor: Color
     public let title: String
