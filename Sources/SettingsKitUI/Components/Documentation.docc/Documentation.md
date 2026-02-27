@@ -13,8 +13,8 @@ The package enforces Apple's Human Interface Guidelines automatically, translati
 At the core of SettingsKitUI is the hierarchical router and composable rows.
 
 ### Routing
-Wrap your settings in an ``SKSettingsView`` and provide an array of ``SKPage`` models. 
-Use the ``SwiftUI/View/skSettingsStyle(_:)`` environment modifier to enforce a layout style, or leave it automatic.
+Wrap your settings in an and provide an array of ``SKPage`` models. 
+Use the environment modifier to enforce a layout style, or leave it automatic.
 
 ### Building Blocks
 Build out the content of your pages using standard components:
@@ -25,7 +25,6 @@ Build out the content of your pages using standard components:
 ## Topics
 
 ### Root Navigation
-- ``SKSettingsView``
 - ``SKPage``
 - ``SKSettingsStyle``
 
@@ -41,5 +40,3 @@ Build out the content of your pages using standard components:
 
 ### Modifiers
 - ``SKIconShape``
-- ``SwiftUI/View/skShowsIcon(_:)``
-- ``SwiftUI/View/skIconShape(_:)``

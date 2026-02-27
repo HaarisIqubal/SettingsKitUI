@@ -29,7 +29,8 @@ jobs:
             generate-documentation --target SettingsKitUI \
             --disable-indexing \
             --transform-for-static-hosting \
-            --hosting-base-path SettingsKitUI
+            --hosting-base-path SettingsKitUI \
+            --output-path ./docs
             
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
