@@ -8,6 +8,9 @@
 import SwiftUI
 
 // MARK: - Action / Button Row
+/// A action button warps around SwiftUI native button which warps `SKBaseRow`.
+///
+/// `SKActionRow` provides basic action button with label and action.
 public struct SKActionRow: View {
     public let icon: String
     public let iconColor: Color

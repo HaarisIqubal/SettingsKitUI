@@ -38,7 +38,7 @@ public struct SKForm<Content: View>: View {
     public var body: some View {
         Form {
             content
-                .formStyle(.grouped)
         }
+        .formStyle(.grouped)
     }
 }

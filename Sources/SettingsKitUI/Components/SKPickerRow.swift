@@ -29,7 +29,7 @@ public struct SKPickerRow<SelectionValue: Hashable, Content: View>: View {
     public init(icon: String,
                 iconColor: Color,
                 title:String,
-                subtitle: String,
+                subtitle: String? = nil,
                 selection: Binding<SelectionValue>,
                 @ViewBuilder content: () -> Content
     ) {

@@ -7,6 +7,53 @@
 
 import SwiftUI
 
+//MARK: Settings Style Enum
+public enum SKSettingsStyle : Sendable{
+    /// Automatically chooses the best layout according to UI
+    case automatic
+    /// Forces a Tab-based layout (Toolbar tabs on macOS)
+    case tabs
+    /// Forces a Sidebar-based layout using NavigationSplitView
+    case sidebar
+}
+
+//MARK: Environment Setup
+private struct SKSettingsStyleKey: EnvironmentKey {
+    static let defaultValue: SKSettingsStyle = .automatic
+}
+
+private struct SKSettingsSidebarNavigationTitle: EnvironmentKey {
+    static let defaultValue: String = ""
+}
+
+public extension EnvironmentValues {
+    var skSettingsStyle: SKSettingsStyle {
+        get {self[SKSettingsStyleKey.self]}
+        set {self[SKSettingsStyleKey.self] = newValue}
+    }
+    
+    var skSettingsSidebarNavigationTitle: String {
+        get {self[SKSettingsSidebarNavigationTitle.self]}
+        set {self[SKSettingsSidebarNavigationTitle.self] = newValue}
+    }
+}
+
+public extension View {
+    /// Sets the layout style for `SKSettingsView`.
+    /// - Parameters:
+    ///     - style: The `SKSettingsStyle` to apply (.tabs or .sidebar).
+    func skSettingsStyle(_ style: SKSettingsStyle) -> some View {
+        self.environment(\.skSettingsStyle, style)
+    }
+    
+    /// Sets the sidebar navigation title for `SKSettingsView`
+    /// - Parameters:
+    ///     - title: Navigation title for sidebar
+    func skSettingsSidebarTitle(_ title: String) -> some View {
+        self.environment(\.skSettingsSidebarNavigationTitle, title)
+    }
+}
+
 //MARK: Universal Settings Router
 /// A high level view for Settings that orchestrates multiple settings page.
 ///
@@ -24,16 +71,20 @@ import SwiftUI
 /// ])
 /// .skSettingsStyle(.sidebar) // Force split view!
 /// ```
-
-
 public struct SKSettingsView: View {
     public let pages: [SKPage]
     
     @Environment(\.skSettingsStyle) private var style
+    @Environment(\.skSettingsSidebarNavigationTitle) private var sidebarNavigationTitle
     @Environment(\.horizontalSizeClass) private var sizeClass
     
     @State private var selection: String?
     
+    //MARK: Initialiser - Setting View initialiser for native UI.
+    /// Creates a basic settings view requires `SKPage`
+    ///
+    /// - Parameters:
+    ///     - pages: Collection for `SKPage`.
     public init(pages: [SKPage]) {
         self.pages = pages
         self._selection = State(initialValue: pages.first?.id)
@@ -41,53 +92,50 @@ public struct SKSettingsView: View {
     
     public var body: some View {
         #if os(macOS)
-        Group {
-            if style == .sidebar {
-                sidebarLayout
-            } else {
-                tabLayout
-            }
-        }
-        .frame(minWidth: 500, minHeight: 400)
+        resolvedStyle
+            .frame(minWidth: 500, minHeight: 400)
         #else
         sidebarLayout
         #endif
     }
     
     //MARK: Layout Resolving
-    private var resolvedStyle: SKSettingsStyle {
-        if style != .automatic {return style}
-        
-        #if os(macOS)
-        return style == .automatic ? .tabs : style
-        #elseif os(iOS)
-        return .sidebar
-        #else
-        return .sidebar
-        #endif
+    @ViewBuilder private var resolvedStyle: some View {
+        switch style {
+        case .tabs, .automatic:
+            tabLayout
+        case .sidebar:
+            sidebarLayout
+        }
     }
-    
-    
+        
     //MARK: Sidebar Layout
     private var sidebarLayout: some View {
         NavigationSplitView {
-            List(pages, selection: $selection) {page in
+            SKList(pages, selection: $selection) { page in
                 NavigationLink(value: page.id) {
                     SKBaseRow(icon: page.systemIcon, iconColor: nil, title: page.title)
+                        .skBaseRowIconColor(.blue)
                 }
             }
-            .navigationTitle("Settings")
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 250)
-#endif
+            .toolbar(removing: .sidebarToggle)
+            .navigationTitle(sidebarNavigationTitle)
+            .listStyle(.sidebar)
+            .frame(minWidth: 200)
         }
         detail: {
-            if let selectedId = selection, let selectedPage = pages.first(where: {$0.id == selectedId}) {
-                selectedPage.view.navigationTitle(selectedPage.title)
-            } else {
-                Text("Select a setting")
-                    .foregroundStyle(.secondary)
+            Group{
+                if let selectedId = selection, let selectedPage = pages.first(where: {$0.id == selectedId}) {
+                    selectedPage.view.navigationTitle(selectedPage.title)
+                } else {
+                    Text("Select a setting")
+                        .foregroundStyle(.secondary)
+                }
             }
+            .frame(maxHeight: .infinity, alignment: .top)
+#if os(macOS)
+            .navigationSplitViewColumnWidth(min: 440, ideal: 440)
+#endif
         }
     }
     
@@ -107,6 +155,8 @@ public struct SKSettingsView: View {
 
 
 
+//MARK: Preview
+
 struct SettingNew: View {
     @Environment(\.horizontalSizeClass) var sizeclass
     var body: some View {
@@ -121,32 +171,30 @@ struct SettingNew: View {
         } else {
             SKSettingsView(pages: [
                 SKPage(title: "General", systemIcon: "gear", content: {
-                    SKList{
-                        SKForm{
-                            SettingGeneralSection()
-                        }
+                    SKForm{
+                        SettingGeneralSection()
                     }
                 }),
                 SKPage(title: "Sync", systemIcon: "cloud.fill", content: {
-                    SKList{
-                        SKForm{
-                            SettingSyncSection()
-                        }
+                    SKForm{
+                        SettingSyncSection()
                     }
                 }),
                 SKPage(title: "Privacy", systemIcon: "hand.raised.fill", content: {
-                    SKList {
+                    SKForm{
                         SettingPrivacySection()
                     }
                 }),
                 SKPage(title: "Support", systemIcon: "phone", content: {
-                    SKList {
-                        SettingSupportSection()
-                        SettingAppSection()
+                    SKForm{
+                        Group{
+                            SettingSupportSection()
+                            SettingAppSection()
+                        }
                     }
                 })
             ])
-            .skSettingsStyle(.sidebar)
+            .skSettingsStyle(.tabs)
         }
     }
 }
@@ -181,7 +229,7 @@ struct SettingNew: View {
 struct SettingGeneralSection: View {
     var body: some View {
         SKSection {
-            SKActionRow(icon: "purchased", iconColor: .blue, title: "Restore purchases", action: {
+            SKActionRow(icon: "purchased", iconColor: .blue, title: "Restore purchases", subtitle: "Tap to restore your previous purchases.", action: {
                 
             })
             
@@ -195,7 +243,9 @@ struct SettingGeneralSection: View {
         } header: {
             Text("General")
         }
-        .skShowsIcon(false)
+        #if os(macOS)
+        .skBaseRowShowsIcon(false)
+        #endif
 //        .skIconShape(.roundedRectangle(8))
     }
 }

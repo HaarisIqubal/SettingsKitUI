@@ -25,27 +25,47 @@ import SwiftUI
 ///     }
 /// }
 /// ```
-public struct SKList<Content: View>: View {
+public struct SKList<SelectionValue: Hashable, Content: View>: View {
+    public var data: Data?
+    public var selection: Binding<SelectionValue?>?
+    @ViewBuilder public var content: Content
     
-    /// The visual content to be displayed within the list.
-    @ViewBuilder public let content: Content
-    
-    /// Creates a new cross-platform list with the specified content.
-    ///
-    /// - Parameter content: `A view builder closure that provides the sections and rows for the list.`
-    public init(@ViewBuilder content: () -> Content) {
+    public init(_ data:Data?, selection: Binding<SelectionValue?>, @ViewBuilder content: () -> Content) {
+        self.data = data
+        self.selection = selection
         self.content = content()
     }
     
     public var body: some View {
-        List {
+        List(selection: selection) {
             content
         }
-        #if os(macOS)
+#if os(macOS)
         .scrollContentBackground(.hidden)
-        #elseif os(iOS)
-        .listStyle(.insetGrouped)
-        #endif
+#endif
+    }
+}
+
+extension SKList where SelectionValue == Never {
+    /// Creates a new cross-platform list with the specified content.
+    ///
+    /// - Parameter content: `A view builder closure that provides the sections and rows for the list.`
+    public init(@ViewBuilder content: () -> Content) {
+        self.selection = nil
+        self.content = content()
+    }
+}
+
+extension SKList {
+    /// Creates a list that computes its rows from an underlying collection of data, supporting selection.
+    ///
+    /// - Parameters:
+    ///   - data: The collection of identifiable data.
+    ///   - selection: A binding to a selected value.
+    ///   - rowContent: A view builder that creates a row for each item in the data.
+    init<Data: RandomAccessCollection, RowContent: View>(_ data: Data, selection: Binding<SelectionValue?>, @ViewBuilder rowContent: @escaping (Data.Element) -> RowContent) where Content == ForEach<Data, Data.Element.ID, RowContent>, Data.Element: Identifiable {
+        self.selection = selection
+        self.content = ForEach(data, content: rowContent)
     }
 }
 
@@ -69,7 +89,7 @@ public struct SKList<Content: View>: View {
                     action: {}
                 )
                 SKToggleRow(icon: "cloud.fill", iconColor: .blue, title: "iCloud Sync", isOn: .constant(.random()))
-
+                
             } header: {
                 Text("Header")
             } footer : {
