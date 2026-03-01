@@ -1,6 +1,6 @@
 # SettingsKitUI
 
-### 🛑 Currently this package is under inital development phase
+### 🛑 Currently this package is under initial development phase
 🚧 This package in development so expect API changes until stable release appear. Thank you for your understanding.🚧
 
 A composable, cross-platform SwiftUI UI library for building beautiful, native-feeling Settings screens across iOS, iPadOS, macOS, watchOS, and visionOS.
@@ -28,6 +28,10 @@ When managing multiple apps, keeping settings views visually consistent across p
 1. In Xcode, go to **File > Add Package Dependencies...**
 2. Paste the URL of this repository.
 3. Add **SettingsKitUI** to your app targets.
+
+## Getting Started
+
+- [https://haarisiqubal.github.io/SettingsKitUI/documentation/settingskitui/gettingstarted](Getting Started)
 
 ## Quick Start
 
