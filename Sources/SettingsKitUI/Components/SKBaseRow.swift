@@ -83,7 +83,8 @@ public struct SKBaseRow<TrailingContent: View>: View {
         self.subtitle = subtitle
         self.trailingContent = trailingContent()
     }
-        
+    
+    //MARK: Body
     public var body: some View {
         HStack(spacing: 12) {
             if showsIcon {

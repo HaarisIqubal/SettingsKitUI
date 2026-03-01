@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Universal List View
+// MARK: Universal List View
 
 /// A cross-platform wrapper around SwiftUI's native `List`.
 ///
@@ -26,15 +26,31 @@ import SwiftUI
 /// }
 /// ```
 public struct SKList<SelectionValue: Hashable, Content: View>: View {
-    public var data: Data?
-    public var selection: Binding<SelectionValue?>?
-    @ViewBuilder public var content: Content
+    // MARK: Properties
+        
+        /// The underlying data associated with the list, if applicable.
+        public var data: Data?
+        
+        /// A binding to the currently selected value, or `nil` if selection is disabled or nothing is selected.
+        public var selection: Binding<SelectionValue?>?
+        
+        /// The view content displayed within the list.
+        @ViewBuilder public var content: Content
     
+    // MARK: Initialization
+    /// Creates a new cross-platform list with data, a selection binding, and custom content.
+    ///
+    /// - Parameters:
+    ///   - data: The data to associate with the list.
+    ///   - selection: A binding to a selected value.
+    ///   - content: A view builder that provides the sections and rows for the list.
     public init(_ data:Data?, selection: Binding<SelectionValue?>, @ViewBuilder content: () -> Content) {
         self.data = data
         self.selection = selection
         self.content = content()
     }
+    
+    //MARK: Body
     
     public var body: some View {
         List(selection: selection) {
@@ -46,10 +62,15 @@ public struct SKList<SelectionValue: Hashable, Content: View>: View {
     }
 }
 
+//MARK: Extension
+
 extension SKList where SelectionValue == Never {
     /// Creates a new cross-platform list with the specified content.
     ///
-    /// - Parameter content: `A view builder closure that provides the sections and rows for the list.`
+    /// Use this initializer when your list does not require item selection.
+    ///
+    /// - Parameters:
+    ///    - content: `A view builder closure that provides the sections and rows for the list.`
     public init(@ViewBuilder content: () -> Content) {
         self.selection = nil
         self.content = content()
@@ -69,7 +90,7 @@ extension SKList {
     }
 }
 
-// MARK: - Previews
+// MARK: Previews
 
 #Preview {
     NavigationStack {

@@ -8,6 +8,12 @@ SettingsKitUI solves the problem of maintaining redundant settings code across i
 
 The package enforces Apple's Human Interface Guidelines automatically, translating your code into a `NavigationSplitView` on iPad, a `TabView` on macOS, and a standard push-navigation list on iPhone.
 
+## Featured
+
+@Links(visualStyle: detailedGrid) {
+    - <doc:GettingStarted>
+}
+
 ## Architecture
 
 At the core of SettingsKitUI is the hierarchical router and composable rows.
@@ -24,17 +30,19 @@ Build out the content of your pages using standard components:
 
 ## Topics
 
-### Root Navigation
+### Views
 - ``SKPage``
 - ``SKSettingsStyle``
 
-### Containers
+### Layouts
 - ``SKList``
+- ``SKForm``
 - ``SKSection``
 
-### UI Rows
+### Components
 - ``SKBaseRow``
 - ``SKActionRow``
+- ``SKNavigationRow``
 - ``SKToggleRow``
 - ``SKPickerRow``
 
