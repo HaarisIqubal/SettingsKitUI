@@ -1,23 +1,23 @@
-//
-//  SKSettingsView.swift
-//  SettingsKitUI
-//
-//  Created by Haaris Iqubal on 25/02/26.
-//
+    //
+    //  SKSettingsView.swift
+    //  SettingsKitUI
+    //
+    //  Created by Haaris Iqubal on 25/02/26.
+    //
 
 import SwiftUI
 
-//MARK: Settings Style Enum
+    //MARK: Settings Style Enum
 public enum SKSettingsStyle : Sendable{
-    /// Automatically chooses the best layout according to UI
+        /// Automatically chooses the best layout according to UI
     case automatic
-    /// Forces a Tab-based layout (Toolbar tabs on macOS)
+        /// Forces a Tab-based layout (Toolbar tabs on macOS)
     case tabs
-    /// Forces a Sidebar-based layout using NavigationSplitView
+        /// Forces a Sidebar-based layout using NavigationSplitView
     case sidebar
 }
 
-//MARK: Environment Setup
+    //MARK: Environment Setup
 private struct SKSettingsStyleKey: EnvironmentKey {
     static let defaultValue: SKSettingsStyle = .automatic
 }
@@ -39,38 +39,38 @@ public extension EnvironmentValues {
 }
 
 public extension View {
-    /// Sets the layout style for `SKSettingsView`.
-    /// - Parameters:
-    ///     - style: The `SKSettingsStyle` to apply (.tabs or .sidebar).
+        /// Sets the layout style for `SKSettingsView`.
+        /// - Parameters:
+        ///     - style: The `SKSettingsStyle` to apply (.tabs or .sidebar).
     func skSettingsStyle(_ style: SKSettingsStyle) -> some View {
         self.environment(\.skSettingsStyle, style)
     }
     
-    /// Sets the sidebar navigation title for `SKSettingsView`
-    /// - Parameters:
-    ///     - title: Navigation title for sidebar
+        /// Sets the sidebar navigation title for `SKSettingsView`
+        /// - Parameters:
+        ///     - title: Navigation title for sidebar
     func skSettingsSidebarTitle(_ title: String) -> some View {
         self.environment(\.skSettingsSidebarNavigationTitle, title)
     }
 }
 
-//MARK: Universal Settings Router
-/// A high level view for Settings that orchestrates multiple settings page.
-///
-/// Use `SKSettingsView` at the root of yout settings window or view. It automatically renders as a Sidebar or TabView depending on the platform and environment modifiers.
-///
-/// ### Example Usage
-/// ```swift
-/// SKSettingsView(pages: [
-///     SKPage(title: "General", systemIcon: "gear") {
-///         GeneralSettingsList() // Your SKList goes here
-///     },
-///     SKPage(title: "Sync", systemIcon: "cloud") {
-///         SyncSettingsList() // Your SKList goes here
-///     }
-/// ])
-/// .skSettingsStyle(.sidebar) // Force split view!
-/// ```
+    //MARK: Universal Settings Router
+    /// A high level view for Settings that orchestrates multiple settings page.
+    ///
+    /// Use `SKSettingsView` at the root of yout settings window or view. It automatically renders as a Sidebar or TabView depending on the platform and environment modifiers.
+    ///
+    /// ### Example Usage
+    /// ```swift
+    /// SKSettingsView(pages: [
+    ///     SKPage(title: "General", systemIcon: "gear") {
+    ///         GeneralSettingsList() // Your SKList goes here
+    ///     },
+    ///     SKPage(title: "Sync", systemIcon: "cloud") {
+    ///         SyncSettingsList() // Your SKList goes here
+    ///     }
+    /// ])
+    /// .skSettingsStyle(.sidebar) // Force split view!
+    /// ```
 public struct SKSettingsView: View {
     public let pages: [SKPage]
     
@@ -80,26 +80,26 @@ public struct SKSettingsView: View {
     
     @State private var selection: String?
     
-    //MARK: Initialiser - Setting View initialiser for native UI.
-    /// Creates a basic settings view requires `SKPage`
-    ///
-    /// - Parameters:
-    ///     - pages: Collection for `SKPage`.
+        //MARK: Initialiser - Setting View initialiser for native UI.
+        /// Creates a basic settings view requires `SKPage`
+        ///
+        /// - Parameters:
+        ///     - pages: Collection for `SKPage`.
     public init(pages: [SKPage]) {
         self.pages = pages
         self._selection = State(initialValue: pages.first?.id)
     }
     
     public var body: some View {
-        #if os(macOS)
+#if os(macOS)
         resolvedStyle
             .frame(minWidth: 500, minHeight: 400)
-        #else
+#else
         sidebarLayout
-        #endif
+#endif
     }
     
-    //MARK: Layout Resolving
+        //MARK: Layout Resolving
     @ViewBuilder private var resolvedStyle: some View {
         switch style {
         case .tabs, .automatic:
@@ -108,8 +108,8 @@ public struct SKSettingsView: View {
             sidebarLayout
         }
     }
-        
-    //MARK: Sidebar Layout
+    
+        //MARK: Sidebar Layout
     private var sidebarLayout: some View {
         NavigationSplitView {
             SKList(pages, selection: $selection) { page in
@@ -139,7 +139,7 @@ public struct SKSettingsView: View {
         }
     }
     
-    //MARK: Tab Layout
+        //MARK: Tab Layout
     private var tabLayout: some View {
         TabView {
             ForEach(pages) {page in
@@ -162,41 +162,41 @@ struct SettingNew: View {
     var body: some View {
         if sizeclass == .compact {
             SKList {
-                        SettingGeneralSection()
-                        SettingSyncSection()
-                        SettingPrivacySection()
-                        SettingSupportSection()
-                        SettingAppSection()
-                    }
-        } else {
-            SKSettingsView(pages: [
+                SettingGeneralSection()
+                SettingSyncSection()
+                SettingPrivacySection()
+                SettingSupportSection()
+                SettingAppSection()
+                }
+            } else {
+                SKSettingsView(pages: [
                 SKPage(title: "General", systemIcon: "gear", content: {
                     SKForm{
                         SettingGeneralSection()
-                    }
-                }),
+                        }
+                    }),
                 SKPage(title: "Sync", systemIcon: "cloud.fill", content: {
                     SKForm{
                         SettingSyncSection()
-                    }
-                }),
+                        }
+                    }),
                 SKPage(title: "Privacy", systemIcon: "hand.raised.fill", content: {
                     SKForm{
                         SettingPrivacySection()
-                    }
-                }),
+                        }
+                    }),
                 SKPage(title: "Support", systemIcon: "phone", content: {
                     SKForm{
                         Group{
                             SettingSupportSection()
                             SettingAppSection()
+                            }
                         }
-                    }
-                })
-            ])
-            .skSettingsStyle(.tabs)
+                    })
+                ])
+                .skSettingsStyle(.tabs)
+                }
         }
-    }
 }
 
 #Preview {
@@ -204,25 +204,25 @@ struct SettingNew: View {
 }
 
 #Preview("Sidebar Style") {
-        SKSettingsView(pages: [
-            SKPage(title: "General", systemIcon: "gear") {
-                SKList {
-                    SKSection {
-                        SKActionRow(icon: "paintpalette.fill", iconColor: .purple, title: "Theme", subtitle: "Dark Mode") {}
-                    } header: {
-                        Text("Appearance")
+    SKSettingsView(pages: [
+    SKPage(title: "General", systemIcon: "gear") {
+        SKList {
+            SKSection {
+                SKActionRow(icon: "paintpalette.fill", iconColor: .purple, title: "Theme", subtitle: "Dark Mode") {}
+                } header: {
+                    Text("Appearance")
                     }
-                }
-            },
-            SKPage(title: "Sync", systemIcon: "cloud.fill") {
-                SKList {
-                    SKSection {
-                        SKActionRow(icon: "icloud.fill", iconColor: .blue, title: "iCloud Sync", subtitle: "Active") {}
-                    }
+            }
+        },
+    SKPage(title: "Sync", systemIcon: "cloud.fill") {
+        SKList {
+            SKSection {
+                SKActionRow(icon: "icloud.fill", iconColor: .blue, title: "iCloud Sync", subtitle: "Active") {}
                 }
             }
-        ])
-        .skSettingsStyle(.tabs)
+        }
+    ])
+    .skSettingsStyle(.tabs)
 }
 
 //MARK: Smaller Sections
@@ -231,40 +231,40 @@ struct SettingGeneralSection: View {
         SKSection {
             SKActionRow(icon: "purchased", iconColor: .blue, title: "Restore purchases", subtitle: "Tap to restore your previous purchases.", action: {
                 
-            })
+                })
             
             SKActionRow(icon: "star.fill", iconColor: .yellow, title: "What's new", action: {
                 
-            })
+                })
             SKActionRow(icon: "wand.and.stars", iconColor: .purple, title: "New Features", action: {
                 
-            })
+                })
             SKToggleRow(icon: "shuffle", iconColor: .orange, title: "Shuffle cards", isOn: .constant(.random()))
-        } header: {
-            Text("General")
-        }
-        #if os(macOS)
+            } header: {
+                Text("General")
+                }
+#if os(macOS)
         .skBaseRowShowsIcon(false)
-        #endif
-//        .skIconShape(.roundedRectangle(8))
-    }
+#endif
+        //        .skIconShape(.roundedRectangle(8))
+        }
 }
 
 struct SettingSyncSection: View {
-    var body: some View{
-        SKSection {
-            SKToggleRow(icon: "cloud.fill", iconColor: .blue, title: "iCloud sync", isOn: .constant(.random()))
-            SKActionRow(icon: "xmark.icloud.fill", iconColor: .red, title: "Delete iCloud data", action: {
-                
-            })
-        } header: {
-            Text("Sync")
-        } footer: {
-            Text("Toggling iCloud Sync may require to close the app.\n")
-            +
-            Text("Delete iCloud Data will delete you personal data on iCloud your app data will be unaffected.")
-        }
-    }
+            var body: some View{
+                SKSection {
+                    SKToggleRow(icon: "cloud.fill", iconColor: .blue, title: "iCloud sync", isOn: .constant(.random()))
+                    SKActionRow(icon: "xmark.icloud.fill", iconColor: .red, title: "Delete iCloud data", action: {
+                        
+                    })
+                } header: {
+                    Text("Sync")
+                } footer: {
+                    Text("Toggling iCloud Sync may require to close the app.\n")
+                    +
+                    Text("Delete iCloud Data will delete you personal data on iCloud your app data will be unaffected.")
+                }
+            }
 }
 
 struct SettingPrivacySection: View {
@@ -305,4 +305,57 @@ struct SettingAppSection: View {
             Text("Deck app")
         }
     }
+}
+
+#Preview("Header") {
+    @Previewable @State var notificationsEnabled = false
+    SKList {
+        SKSection(header: "Preferences") {
+            SKToggleRow(
+                icon: "bell.fill",
+                iconColor: .red,
+                title: "Notifications",
+                subtitle: "Allow push notifications",
+                isOn: $notificationsEnabled
+            )
+        }
+    }
+}
+
+#Preview("SK Page Example") {
+    @Previewable @State var notificationsEnabled = false
+    @Previewable @State var appTheme = 1
+    SKSettingsView(pages: [
+        SKPage(title: "Setting", systemIcon: "gear", content: {
+            SKList{
+                SKSection(header: "Preferences") {
+                    SKToggleRow(
+                        icon: "bell.fill",
+                        iconColor: .red,
+                        title: "Notifications",
+                        isOn: $notificationsEnabled
+                    )
+                    SKPickerRow(
+                        icon: "paintpalette.fill",
+                        iconColor: .indigo,
+                        title: "Theme",
+                        selection: $appTheme
+                    ) {
+                        Text("Light").tag(0)
+                        Text("Dark").tag(1)
+                    }
+                }
+                
+                SKSection(header: "Account") {
+                    SKNavigationRow(
+                        icon: "person.crop.circle",
+                        iconColor: .blue,
+                        title: "Profile"
+                    ) {
+                        Text("Profile Detail View")
+                    }
+                }
+            }
+        })
+    ])
 }

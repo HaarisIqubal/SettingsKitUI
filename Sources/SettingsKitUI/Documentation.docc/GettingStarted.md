@@ -1,5 +1,9 @@
 # Getting Started with SettingsKitUI
 
+@Metadata{
+    @PageImage(purpose: icon, source: "SKBasicSetting", alt: "SKBasic Image")
+    @PageColor(blue)
+}
 Learn how to quickly build a structured, native-feeling settings screen using SettingsKitUI.
 
 ## Overview
@@ -8,9 +12,12 @@ SettingsKitUI provides a declarative, SwiftUI-native approach to building comple
 
 This guide will walk you through creating a basic settings page, complete with navigation, toggles, and picker controls.
 
-## Step 1: Set Up Your List
+In this guide the final view appear much more like this
+![Basic Setting View](SKBasicSetting)
 
-Every SettingsKitUI screen starts with an `SKList` and an `SKForm` to host your content. The `SKPage` acts as the primary container, while the `SKForm` provides the familiar grouped list styling.
+### Step 1: Set Up Your List
+
+Every SettingsKitUI screen starts with an `SKList` or `SKForm` to host your content. The `SKList` or `SKForm` provides the familiar grouped list styling. You have choice to use one or both of them.
 
 ```swift
 import SwiftUI
@@ -19,15 +26,13 @@ import SettingsKitUI
 struct MySettingsView: View {
 var body: some View {
     SKList {
-        SKForm {
-            // Components will go here
-            }
+        // Components will go here
         }
     }
 }
 ```
 
-## Step 2: Add a Section with Controls
+### Step 2: Add a Section with Controls
 Settings are typically grouped by context. Let's add an SKSection to hold a toggle switch for notifications. We will use `SKToggleRow` to handle the user's input.
 
 ```swift
@@ -40,26 +45,25 @@ struct MySettingsView: View {
 @State private var notificationsEnabled = true
 
 var body: some View {
-    SKPage(title: "Settings") {
-        SKForm {
-            SKSection(header: "Preferences") {
-                SKToggleRow(
-                icon: "bell.fill",
-                iconColor: .red,
-                title: "Notifications",
-                subtitle: "Allow push notifications",
-                isOn: $notificationsEnabled
-                )
-                }
+    SKList {
+        SKSection(header: "Preferences") {
+            SKToggleRow(
+            icon: "bell.fill",
+            iconColor: .red,
+            title: "Notifications",
+            subtitle: "Allow push notifications",
+            isOn: $notificationsEnabled
+            )
             }
         }
     }
 }
 ```
 
-## Step 3: Implement Navigation and Pickers
 
-Next, let's add another section for account details using `SKNavigationRow` to navigate to a deeper view, and an `SKPickerRow` to select an app theme.
+
+### Step 3: Adding more settings options
+There is always much more than a toggle button, `SettingKitUI` provide other input method so you can add more complex setting screen. Let add a `SKPickerRow` to let user to choose from different options.
 
 ```swift
 import SwiftUI
@@ -72,43 +76,28 @@ struct MySettingsView: View {
 @State private var appTheme = 0
 
 var body: some View {
-    SKPage(title: "Settings") {
-        SKForm {
-
-    // MARK: Preferences Section
+    SKList {
         SKSection(header: "Preferences") {
-        SKToggleRow(
-        icon: "bell.fill",
-        iconColor: .red,
-        title: "Notifications",
-        isOn: $notificationsEnabled
-        )
+            SKToggleRow(
+            icon: "bell.fill",
+            iconColor: .red,
+            title: "Notifications",
+            subtitle: "Allow push notifications",
+            isOn: $notificationsEnabled
+            )
 
-        SKPickerRow(
-        icon: "paintpalette.fill",
-        iconColor: .indigo,
-        title: "Theme",
-        selection: $appTheme
-        ) {
-        Text("Light").tag(0)
-        Text("Dark").tag(1)
-        }
-        }
-
-        // MARK: Account Section
-        SKSection(header: "Account") {
-        SKNavigationRow(
-        icon: "person.crop.circle",
-        iconColor: .blue,
-        title: "Profile"
-        ) {
-        Text("Profile Detail View")
-        }
-        }
-
-        }
+            SKPickerRow(
+            icon: "paintpalette.fill",
+            iconColor: .indigo,
+            title: "Theme",
+            selection: $appTheme
+            ) {
+                Text("Light").tag(0)
+                Text("Dark").tag(1)
+            }
         }
     }
+ }
 }
 ```
 

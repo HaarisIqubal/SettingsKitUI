@@ -12,6 +12,7 @@ The package enforces Apple's Human Interface Guidelines automatically, translati
 
 @Links(visualStyle: detailedGrid) {
     - <doc:GettingStarted>
+    - <doc:MakingSettingsView>
 }
 
 ## Architecture
