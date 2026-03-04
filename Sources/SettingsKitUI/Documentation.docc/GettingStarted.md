@@ -1,7 +1,7 @@
 # Getting Started with SettingsKitUI
 
 @Metadata{
-    @PageImage(purpose: icon, source: "SKBasicSetting", alt: "SKBasic Image")
+    @PageImage(purpose: card, source: "skbasicSmall", alt: "The profile icon for article of getting started")
     @PageColor(blue)
 }
 Learn how to quickly build a structured, native-feeling settings screen using SettingsKitUI.

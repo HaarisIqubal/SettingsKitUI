@@ -1,10 +1,18 @@
 # ``SettingsKitUI``
 
+@Metadata{
+    @PageImage(purpose: icon, source: "skicon", alt: "The profile images for a regular sloth and an ice sloth.")
+    @PageImage(purpose: card, source: "skiconSmall", alt: "The profile images for a regular sloth and an ice sloth.")
+    @PageCol or(purple)
+}
+
 A composable, cross-platform SwiftUI library for building beautiful native Settings screens.
 
 ## Overview
 
 SettingsKitUI solves the problem of maintaining redundant settings code across iOS, iPadOS, macOS, watchOS, and visionOS. By providing highly abstract, platform-aware UI building blocks, you can write your settings hierarchy once and let the kit handle the platform-specific quirks.
+
+![SKSettingView Page View](skbackgroundimagereadme.png)
 
 The package enforces Apple's Human Interface Guidelines automatically, translating your code into a `NavigationSplitView` on iPad, a `TabView` on macOS, and a standard push-navigation list on iPhone.
 

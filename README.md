@@ -4,6 +4,7 @@
 ![Setting Kit UI Icon](Sources/SettingsKitUI/Documentation.docc/Resources/skicon.png)
 
 </div>
+
 ### 🛑 Currently this package is under initial development phase
 🚧 This package in development so expect API changes until stable release appear. Thank you for your understanding.🚧
 
@@ -17,7 +18,7 @@ A composable, cross-platform SwiftUI UI library for building beautiful, native-f
 
 [![Swift 6](https://img.shields.io/badge/Swift-6.0%206.1%206.2-orange.svg?logo=swift&logoColor=white)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20watchOS%2010+%20|%20visionOS%202+|%20macOS%2014+-black.svg?logo=apple)](https://swift.org)
-[![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)
+[![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange)](https://swiftpackageindex.com/HaarisIqubal/SettingsKitUI)
 [![DocC](https://img.shields.io/badge/Read%20the%20Docs-orange?logo=readthedocs&logoColor=fff)](https://haarisiqubal.github.io/SettingsKitUI/documentation/settingskitui/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
 
@@ -41,7 +42,8 @@ When managing multiple apps, keeping settings views visually consistent across p
 
 ## Getting Started
 
-- [https://haarisiqubal.github.io/SettingsKitUI/documentation/settingskitui/gettingstarted](Getting Started)
+- [Getting started with SettingsKit](https://haarisiqubal.github.io/SettingsKitUI/documentation/settingskitui/gettingstarted)
+- [Start making Settings view](https://haarisiqubal.github.io/SettingsKitUI/documentation/settingskitui/makingsettingsview)
 
 ## Quick Start
 

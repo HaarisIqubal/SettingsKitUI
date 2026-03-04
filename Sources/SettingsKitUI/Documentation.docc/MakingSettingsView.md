@@ -1,7 +1,7 @@
 # Start making Settings View
 
 @Metadata{
-    @PageImage(purpose: icon, source: "SKSettingViewBasic", alt: "SKBasic Image")
+    @PageImage(purpose: card, source: "SKSettingViewBasic", alt: "The profile icon for article of start making settings view.")
     @PageCol or(purple)
 }
 
