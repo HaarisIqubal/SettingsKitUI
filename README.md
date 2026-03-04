@@ -1,9 +1,19 @@
 # SettingsKitUI
+<div align="center">
 
+![Setting Kit UI Icon](Sources/SettingsKitUI/Documentation.docc/Resources/skicon.png)
+
+</div>
 ### 🛑 Currently this package is under initial development phase
 🚧 This package in development so expect API changes until stable release appear. Thank you for your understanding.🚧
 
 A composable, cross-platform SwiftUI UI library for building beautiful, native-feeling Settings screens across iOS, iPadOS, macOS, watchOS, and visionOS.
+
+<div align="center">
+
+![Preview Image of Settings kit](Sources/SettingsKitUI/Documentation.docc/Resources/skbackgroundimagereadme.png)
+
+</div>
 
 [![Swift 6](https://img.shields.io/badge/Swift-6.0%206.1%206.2-orange.svg?logo=swift&logoColor=white)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/Platforms-iOS%2017+%20|%20watchOS%2010+%20|%20visionOS%202+|%20macOS%2014+-black.svg?logo=apple)](https://swift.org)

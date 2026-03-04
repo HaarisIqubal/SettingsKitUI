@@ -171,3 +171,13 @@ public extension SKSection where Header == Text, Footer == Text {
         self.footer = Text(footer)
     }
 }
+
+//MARK: 8 Header as String and Footer as View
+public extension SKSection where Header == Text {
+    /// Supports: SKSection(header: "Text") { content } footer: { footerView }
+    init(header: String, @ViewBuilder content: () -> Content, @ViewBuilder footer: () -> Footer) {
+        self.header = Text(header)
+        self.content = content()
+        self.footer = footer()
+    }
+}
