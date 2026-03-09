@@ -73,7 +73,7 @@ public struct SKPickerRow<SelectionValue: Hashable, Content: View>: View {
     ///     - content: A view builder returning the picker's options (using the `.tag()` modifier).
     public init(
         icon: String,
-        iconColor: Color,
+        iconColor: Color? = nil,
         title: String,
         subtitle: String? = nil,
         selection: Binding<SelectionValue>,
@@ -112,7 +112,7 @@ public struct SKPickerRow<SelectionValue: Hashable, Content: View>: View {
     
     /// The content and behavior of the picker row.
     public var body: some View {
-        if let icon = icon, let iconColor = iconColor {
+        if let icon = icon {
             SKBaseRow(icon: icon, iconColor: iconColor, title: title, subtitle: subtitle) {
                 Picker("", selection: $selection) {
                     content
@@ -130,15 +130,37 @@ public struct SKPickerRow<SelectionValue: Hashable, Content: View>: View {
 
 // MARK: Previews
 
-#Preview {
+#Preview("Without labels and icons") {
     @Previewable @State var selectionMethod = 1
     SKPickerRow(title: "Calculation method", selection: $selectionMethod) {
         Text("2")
             .tag(2)
+        Text("3")
+            .tag(3)
     }
     #if os(macOS)
     .pickerStyle(.radioGroup)
     .frame(minWidth: 120)
+    #else
+    .pickerStyle(.menu)
     #endif
+    .labelsHidden()
+}
+
+#Preview("With labels and icons") {
+    @Previewable @State var selectionMethod = 1
+    SKPickerRow(icon: "phone.fill", title: "Calculation method", selection: $selectionMethod) {
+        Text("2")
+            .tag(2)
+        Text("3")
+            .tag(3)
+    }
+    .skBaseRowIconColor(.gray)
+#if os(macOS)
+    .pickerStyle(.radioGroup)
+    .frame(minWidth: 120)
+#else
+    .pickerStyle(.menu)
+#endif
     .labelsHidden()
 }

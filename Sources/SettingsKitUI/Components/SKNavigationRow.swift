@@ -49,10 +49,10 @@ public struct SKNavigationRow<Destination: View>: View {
     // MARK: Properties
     
     /// The name of the SF Symbol or image asset to display as the row's icon.
-    public let icon: String
+    public let icon: String?
     
     /// The color used to tint the icon.
-    public let iconColor: Color
+    public let iconColor: Color?
     
     /// The primary text displayed in the row.
     public let title: String
@@ -73,7 +73,7 @@ public struct SKNavigationRow<Destination: View>: View {
     ///   - title: The primary text to display.
     ///   - subtitle: The optional secondary text to display. Defaults to `nil`.
     ///   - destination: A view builder that creates the destination view.
-    public init(icon: String, iconColor: Color, title: String, subtitle: String? = nil, @ViewBuilder destination: () -> Destination) {
+    public init(icon: String? = nil, iconColor: Color? = nil, title: String, subtitle: String? = nil, @ViewBuilder destination: () -> Destination) {
         self.icon = icon
         self.iconColor = iconColor
         self.title = title
@@ -93,18 +93,25 @@ public struct SKNavigationRow<Destination: View>: View {
 
 //MARK: Preview
 #Preview {
-    SKList {
-        SKSection {
-            SKNavigationRow(
-                icon: "person.crop.circle.fill",
-                iconColor: .blue,
-                title: "Profile",
-                subtitle: "Manage your personal information"
-            ) {
-                Text("Preview")
+    NavigationStack{
+        SKList {
+            SKSection {
+                SKNavigationRow(
+                    icon: "person.crop.circle.fill",
+                    iconColor: .blue,
+                    title: "Profile",
+                    subtitle: "Manage your personal information"
+                ) {
+                    Text("Preview")
+                }
+                SKNavigationRow(icon: "person.crop.circle", title: "Profile Password", destination: {
+                    Text("Password")
+                })
+                .skBaseRowIconColor(.green)
+                .skBaseRowFontSize(.title)
+            } header: {
+                Text("Account")
             }
-        } header: {
-            Text("Account")
-            }
+        }
     }
 }

@@ -32,10 +32,10 @@ public struct SKToggleRow: View {
     // MARK: Properties
     
     /// The name of the SF Symbol or image asset to display as the row's icon.
-    public let icon: String
+    public let icon: String?
     
     /// The color used to tint the icon's background or foreground.
-    public let iconColor: Color
+    public let iconColor: Color?
     
     /// The primary text displayed in the row.
     public let title: String
@@ -56,7 +56,12 @@ public struct SKToggleRow: View {
     ///   - title: The primary text to display.
     ///   - subtitle: The optional secondary text to display. Defaults to `nil`.
     ///   - isOn: A binding to a boolean value that dictates the toggle's state.
-    public init(icon: String, iconColor: Color, title: String, subtitle: String? = nil, isOn: Binding<Bool>) {
+    public init(
+        icon: String? = nil,
+        iconColor: Color? = nil,
+        title: String,
+        subtitle: String? = nil,
+        isOn: Binding<Bool>) {
         self.icon = icon
         self.iconColor = iconColor
         self.title = title
@@ -79,5 +84,9 @@ public struct SKToggleRow: View {
 
 #Preview {
     @Previewable @State var location = false
-    SKToggleRow(icon: "location.fill", iconColor: .blue, title: "Location", isOn: $location)
+    SKList{
+        SKToggleRow(icon: "location.fill", iconColor: .blue, title: "Location", isOn: $location)
+        SKToggleRow(icon: "location.fill", title: "Location", isOn: $location)
+            .skBaseRowIconColor(.gray)
+    }
 }

@@ -42,11 +42,12 @@ public struct SKBaseRow<TrailingContent: View>: View {
     @ViewBuilder public let trailingContent: TrailingContent
     
     @ScaledMetric(relativeTo: .body) private var backgroundSize: CGFloat = 28
-        @ScaledMetric(relativeTo: .body) private var symbolSize: CGFloat = 16
+    @ScaledMetric(relativeTo: .body) private var symbolSize: CGFloat = 16
     
     @Environment(\.skBaseRowIconColor) private var baseIconColor
     @Environment(\.skBaseRowShowsIcon) private var showsIcon
     @Environment(\.skBaseRowIconShape) private var iconShape
+    @Environment(\.skBaseRowIconFontSize) private var iconFontSize
     
     //MARK: Initialiser 1 - With icon and icon color
     /// Creates a baserow with icon, iconColor, title, subtitle and trailing content.
@@ -58,7 +59,7 @@ public struct SKBaseRow<TrailingContent: View>: View {
     ///     - trailingContent: Optional trailing view if needed.
     public init(
         icon: String? = nil,
-        iconColor: Color?,
+        iconColor: Color? = nil,
         title: String,
         subtitle: String? = nil,
         @ViewBuilder trailingContent: () -> TrailingContent = { EmptyView() }
@@ -87,16 +88,12 @@ public struct SKBaseRow<TrailingContent: View>: View {
     //MARK: Body
     public var body: some View {
         HStack(spacing: 12) {
-            if showsIcon {
-                ZStack {
-                    iconBackgroundShape
-                    if let icon = icon {
-                        Image(systemName: icon)
-                            .foregroundStyle(baseIconColor)
-                            .font(.system(size: symbolSize))
-                    }
-                }
-                .frame(width: backgroundSize, height: backgroundSize)
+            if showsIcon, let icon = icon {
+                Image(systemName: icon)
+                    .foregroundStyle(baseIconColor)
+                    .font(iconColor != nil ? .system(size: symbolSize) : iconFontSize)
+                    .frame(width: backgroundSize , height: backgroundSize)
+                    .background(iconBackgroundShape)
             }
             
             VStack(alignment: .leading, spacing: 2) {
@@ -161,6 +158,10 @@ private struct SKBaseRowIconColor: EnvironmentKey {
     static let defaultValue: Color = .white
 }
 
+private struct SKBaseRowIconFontSize: EnvironmentKey {
+    static let defaultValue: Font = .body
+}
+
 public extension EnvironmentValues {
     var skBaseRowShowsIcon: Bool {
         get { self[SKShowsIconKeys.self] }
@@ -176,6 +177,11 @@ public extension EnvironmentValues {
     var skBaseRowIconColor: Color {
         get {self[SKBaseRowIconColor.self]}
         set {self[SKBaseRowIconColor.self] = newValue}
+    }
+    
+    var skBaseRowIconFontSize: Font {
+        get {self[SKBaseRowIconFontSize.self]}
+        set {self[SKBaseRowIconFontSize.self] = newValue}
     }
 }
 
@@ -198,6 +204,13 @@ public extension View {
     func skBaseRowIconColor(_ color: Color) -> some View {
         self.environment(\.skBaseRowIconColor, color)
     }
+    
+    ///Changes the icon size of row when there is no background color
+    /// - Parameters:
+    ///     - font: The SwiftUI native font class
+    func skBaseRowFontSize(_ font: Font) -> some View {
+        self.environment(\.skBaseRowIconFontSize, font)
+    }
 }
 
 
@@ -215,5 +228,8 @@ public extension View {
         
         SKBaseRow(icon: "trash.fill", iconColor: .red, title: "Delete data", subtitle: "Delete device data")
             .skBaseRowShowsIcon(false)
+        
+        SKBaseRow(icon: "phone.fill", title: "Phone")
+            .skBaseRowIconColor(.blue)
     }
 }

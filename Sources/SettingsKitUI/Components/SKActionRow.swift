@@ -27,10 +27,10 @@ public struct SKActionRow: View {
     // MARK: - Properties
     
     /// The name of the image asset or SF Symbol used for the row's icon.
-    public let icon: String
+    public let icon: String?
     
     /// The tint color applied to the icon.
-    public let iconColor: Color
+    public let iconColor: Color?
     
     /// The primary text displayed in the row.
     public let title: String
@@ -51,7 +51,12 @@ public struct SKActionRow: View {
     ///   - title: The primary text to display.
     ///   - subtitle: Optional secondary text to display below the title. Defaults to `nil`.
     ///   - action: The closure to invoke when the row is tapped.
-    public init(icon: String, iconColor: Color, title: String, subtitle: String? = nil, action: @escaping () -> Void) {
+    public init(
+        icon: String? = nil,
+        iconColor: Color? = nil,
+        title: String,
+        subtitle: String? = nil,
+        action: @escaping () -> Void) {
         self.icon = icon
         self.iconColor = iconColor
         self.title = title
@@ -66,5 +71,18 @@ public struct SKActionRow: View {
             SKBaseRow(icon: icon, iconColor: iconColor, title: title, subtitle: subtitle)
         }
         .buttonStyle(.plain)
+    }
+}
+
+
+#Preview {
+    SKList{
+        SKActionRow(title: "Action", action: {
+            
+        })
+        SKActionRow(icon: "location.fill", title: "Location Mangement", action: {
+            
+        })
+        .skBaseRowIconColor(.blue)
     }
 }
