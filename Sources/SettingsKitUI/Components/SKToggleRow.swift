@@ -32,7 +32,7 @@ public struct SKToggleRow: View {
     // MARK: Properties
     
     /// The name of the SF Symbol or image asset to display as the row's icon.
-    public let icon: String?
+    public let icon: SKIcon?
     
     /// The color used to tint the icon's background or foreground.
     public let iconColor: Color?
@@ -57,7 +57,7 @@ public struct SKToggleRow: View {
     ///   - subtitle: The optional secondary text to display. Defaults to `nil`.
     ///   - isOn: A binding to a boolean value that dictates the toggle's state.
     public init(
-        icon: String? = nil,
+        icon: SKIcon? = nil,
         iconColor: Color? = nil,
         title: String,
         subtitle: String? = nil,

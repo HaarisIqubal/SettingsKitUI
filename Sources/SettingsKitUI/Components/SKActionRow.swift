@@ -27,7 +27,7 @@ public struct SKActionRow: View {
     // MARK: - Properties
     
     /// The name of the image asset or SF Symbol used for the row's icon.
-    public let icon: String?
+    public let icon: SKIcon?
     
     /// The tint color applied to the icon.
     public let iconColor: Color?
@@ -52,7 +52,7 @@ public struct SKActionRow: View {
     ///   - subtitle: Optional secondary text to display below the title. Defaults to `nil`.
     ///   - action: The closure to invoke when the row is tapped.
     public init(
-        icon: String? = nil,
+        icon: SKIcon? = nil,
         iconColor: Color? = nil,
         title: String,
         subtitle: String? = nil,

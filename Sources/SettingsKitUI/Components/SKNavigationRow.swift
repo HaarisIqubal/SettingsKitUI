@@ -49,7 +49,7 @@ public struct SKNavigationRow<Destination: View>: View {
     // MARK: Properties
     
     /// The name of the SF Symbol or image asset to display as the row's icon.
-    public let icon: String?
+    public let icon: SKIcon?
     
     /// The color used to tint the icon.
     public let iconColor: Color?
@@ -73,7 +73,12 @@ public struct SKNavigationRow<Destination: View>: View {
     ///   - title: The primary text to display.
     ///   - subtitle: The optional secondary text to display. Defaults to `nil`.
     ///   - destination: A view builder that creates the destination view.
-    public init(icon: String? = nil, iconColor: Color? = nil, title: String, subtitle: String? = nil, @ViewBuilder destination: () -> Destination) {
+    public init(
+        icon: SKIcon? = nil,
+        iconColor: Color? = nil,
+        title: String,
+        subtitle: String? = nil,
+        @ViewBuilder destination: () -> Destination) {
         self.icon = icon
         self.iconColor = iconColor
         self.title = title

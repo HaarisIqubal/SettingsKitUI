@@ -47,7 +47,7 @@ public struct SKPickerRow<SelectionValue: Hashable, Content: View>: View {
     public let subtitle: String?
     
     /// The name of the SF Symbol or image asset to display as the row's icon.
-    public let icon: String?
+    public let icon: SKIcon?
     
     /// The color used to tint the icon's background.
     public let iconColor: Color?
@@ -72,7 +72,7 @@ public struct SKPickerRow<SelectionValue: Hashable, Content: View>: View {
     ///     - selection: A binding to the currently selected value.
     ///     - content: A view builder returning the picker's options (using the `.tag()` modifier).
     public init(
-        icon: String,
+        icon: SKIcon,
         iconColor: Color? = nil,
         title: String,
         subtitle: String? = nil,

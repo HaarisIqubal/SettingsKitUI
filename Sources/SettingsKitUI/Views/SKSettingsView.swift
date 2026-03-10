@@ -114,7 +114,7 @@ public struct SKSettingsView: View {
         NavigationSplitView {
             SKList(pages, selection: $selection) { page in
                 NavigationLink(value: page.id) {
-                    SKBaseRow(icon: page.systemIcon, iconColor: nil, title: page.title)
+                    SKBaseRow(icon: page.icon, iconColor: nil, title: page.title)
                         .skBaseRowIconColor(.blue)
                 }
             }
@@ -144,7 +144,11 @@ public struct SKSettingsView: View {
         TabView {
             ForEach(pages) {page in
                 page.view.tabItem{
-                    Label(page.title, systemImage: page.systemIcon)
+                    HStack{
+                        Text(page.title)
+                        page.icon.view
+                    }
+//                    Label(page.title, systemImage: page.systemIcon)
                 }
                 .tag(page.id)
             }
@@ -170,22 +174,22 @@ struct SettingNew: View {
                 }
             } else {
                 SKSettingsView(pages: [
-                SKPage(title: "General", systemIcon: "gear", content: {
+                SKPage(title: "General", icon: "gear", content: {
                     SKForm{
                         SettingGeneralSection()
                         }
                     }),
-                SKPage(title: "Sync", systemIcon: "cloud.fill", content: {
+                SKPage(title: "Sync", icon: "cloud.fill", content: {
                     SKForm{
                         SettingSyncSection()
                         }
                     }),
-                SKPage(title: "Privacy", systemIcon: "hand.raised.fill", content: {
+                SKPage(title: "Privacy", icon: "hand.raised.fill", content: {
                     SKForm{
                         SettingPrivacySection()
                         }
                     }),
-                SKPage(title: "Support", systemIcon: "phone", content: {
+                SKPage(title: "Support", icon: "phone", content: {
                     SKForm{
                         Group{
                             SettingSupportSection()
@@ -205,7 +209,7 @@ struct SettingNew: View {
 
 #Preview("Sidebar Style") {
     SKSettingsView(pages: [
-    SKPage(title: "General", systemIcon: "gear") {
+    SKPage(title: "General", icon: "gear") {
         SKList {
             SKSection {
                 SKActionRow(icon: "paintpalette.fill", iconColor: .purple, title: "Theme", subtitle: "Dark Mode") {}
@@ -214,7 +218,7 @@ struct SettingNew: View {
                     }
             }
         },
-    SKPage(title: "Sync", systemIcon: "cloud.fill") {
+    SKPage(title: "Sync", icon: "cloud.fill") {
         SKList {
             SKSection {
                 SKActionRow(icon: "icloud.fill", iconColor: .blue, title: "iCloud Sync", subtitle: "Active") {}
@@ -326,7 +330,7 @@ struct SettingAppSection: View {
     @Previewable @State var notificationsEnabled = false
     @Previewable @State var appTheme = 1
     SKSettingsView(pages: [
-        SKPage(title: "Setting", systemIcon: "gear", content: {
+        SKPage(title: "Setting", icon: "gear", content: {
             SKList{
                 SKSection(header: "Preferences") {
                     SKToggleRow(

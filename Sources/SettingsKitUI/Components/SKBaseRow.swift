@@ -35,7 +35,7 @@ import SwiftUI
 ///}
 /// ```
 public struct SKBaseRow<TrailingContent: View>: View {
-    public let icon: String?
+    public let icon: SKIcon?
     public let iconColor: Color?
     public let title: String
     public let subtitle: String?
@@ -58,7 +58,7 @@ public struct SKBaseRow<TrailingContent: View>: View {
     ///     - subtitle: The secondary label of row.
     ///     - trailingContent: Optional trailing view if needed.
     public init(
-        icon: String? = nil,
+        icon: SKIcon? = nil,
         iconColor: Color? = nil,
         title: String,
         subtitle: String? = nil,
@@ -89,7 +89,7 @@ public struct SKBaseRow<TrailingContent: View>: View {
     public var body: some View {
         HStack(spacing: 12) {
             if showsIcon, let icon = icon {
-                Image(systemName: icon)
+                icon.view
                     .foregroundStyle(baseIconColor)
                     .font(iconColor != nil ? .system(size: symbolSize) : iconFontSize)
                     .frame(width: backgroundSize , height: backgroundSize)
@@ -210,6 +210,38 @@ public extension View {
     ///     - font: The SwiftUI native font class
     func skBaseRowFontSize(_ font: Font) -> some View {
         self.environment(\.skBaseRowIconFontSize, font)
+    }
+}
+
+//MARK: Custom Image icons
+
+public enum SKIcon: ExpressibleByStringLiteral {
+    /// An SF Symbol
+    case system(String)
+    /// An image from your Asset Catalog
+    case asset(String)
+    /// A fully custom SwiftUI Image
+    case custom(Image)
+    
+    /// Initializer for SKIcon to run default SF Symbol without adding this enum
+    public init(stringLiteral value: String) {
+        // Default plain string to SF Symbols
+        self = .system(value)
+    }
+    
+    @ViewBuilder
+    var view: some View {
+        switch self {
+        case .system(let name):
+            Image(systemName: name)
+        case .asset(let name):
+            Image(name)
+                .renderingMode(.template)
+        case .custom(let image):
+            image
+                .resizable()
+                .renderingMode(.template)
+        }
     }
 }
 
